@@ -2,6 +2,8 @@ import numpy as np
 import time
 
 from spectral_clustering.algorithm import SpectralAggregator
+from information_theoretic.algorithm import InformationTheoreticAggregator
+from transition_based.algorithm import TransitionBasedAggregator
 
 
 def compute_stationary_distribution(P: np.ndarray) -> np.ndarray:
@@ -94,16 +96,17 @@ if __name__ == "__main__":
 
     algorithms = {
         "Spectral Clustering": SpectralAggregator(k_macro_states=K_MACRO),
-        # "Information Theoretic": InformationTheoreticAggregator(k_macro_states=K_MACRO),
+        "Information Theoretic": InformationTheoreticAggregator(k_macro_states=K_MACRO),
+        "Transition-Based": TransitionBasedAggregator(k_macro_states=K_MACRO),
         # "SDP Optimization": SDPAggregator(k_macro_states=K_MACRO)
     }
 
     for name, aggregator in algorithms.items():
-        # The abstract base class guarantees that .aggregate() is available and valid
-        P_hat, V = aggregator.aggregate(P)
-
         # Runtime measurement using the highest resolution performance counter
         start_time = time.perf_counter()
+
+        # The abstract base class guarantees that .aggregate() is available and valid
+        P_hat, V = aggregator.aggregate(P)
 
         end_time = time.perf_counter()
         execution_time = end_time - start_time

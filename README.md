@@ -21,7 +21,7 @@ The repository is modularized into isolated algorithm environments and a central
 ```text
 ├── spectral_clustering/        # Spectral partition algorithms using eigenvector embedding (e.g., Deng et al.)
 ├── information_theoretic/      # Agglomerative KL-divergence minimization (e.g., Geiger et al.)
-├── reinforcement_learning/     # Deep RL state abstraction methods
+├── transition_based/           # Agglomerative clustering based on transition distribution using Jensen-Shannon distance
 ├── sdp_optimization/           # Optimization and deterministic rounding methodologies
 └── experiment/                 # Centralized evaluation pipelines and synthetic data generation
     ├── benchmark.py            # Main execution script for empirical testing
