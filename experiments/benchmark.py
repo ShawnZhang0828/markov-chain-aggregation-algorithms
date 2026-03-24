@@ -1,11 +1,7 @@
 import numpy as np
 import time
-from scipy.linalg import eig
 
-# import sys
-# import os
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from spectral_clustering.algorithm import spectral_partition, compute_aggregated_matrix
+from spectral_clustering.algorithm import SpectralAggregator
 
 
 def compute_stationary_distribution(P: np.ndarray) -> np.ndarray:
@@ -96,22 +92,27 @@ if __name__ == "__main__":
     print("Generating strictly structured metastable transition matrix...")
     P = generate_metastable_markov_chain(n=N_STATES, k=K_MACRO, noise=0.05)
 
-    print("Executing spectral clustering partition and aggregation...")
+    algorithms = {
+        "Spectral Clustering": SpectralAggregator(k_macro_states=K_MACRO),
+        # "Information Theoretic": InformationTheoreticAggregator(k_macro_states=K_MACRO),
+        # "SDP Optimization": SDPAggregator(k_macro_states=K_MACRO)
+    }
 
-    # Runtime measurement using the highest resolution performance counter
-    start_time = time.perf_counter()
+    for name, aggregator in algorithms.items():
+        # The abstract base class guarantees that .aggregate() is available and valid
+        P_hat, V = aggregator.aggregate(P)
 
-    labels = spectral_partition(P, k=K_MACRO)
-    P_hat, V = compute_aggregated_matrix(P, labels, k=K_MACRO)
+        # Runtime measurement using the highest resolution performance counter
+        start_time = time.perf_counter()
 
-    end_time = time.perf_counter()
-    execution_time = end_time - start_time
+        end_time = time.perf_counter()
+        execution_time = end_time - start_time
 
-    print("Evaluating information preservation metrics...")
-    metrics = evaluate_information_preservation(P, P_hat)
+        print("Evaluating information preservation metrics...")
+        metrics = evaluate_information_preservation(P, P_hat)
 
-    print("\n--- Benchmark Results ---")
-    print(f"Algorithm Runtime:          {execution_time:.6f} seconds")
-    print(f"Original Mutual Info:       {metrics['mi_original']:.6f} bits")
-    print(f"Aggregated Mutual Info:     {metrics['mi_aggregated']:.6f} bits")
-    print(f"Information Loss (KL Rate): {metrics['information_loss']:.6f} bits")
+        print("\n--- Benchmark Results ---")
+        print(f"Algorithm Runtime:          {execution_time:.6f} seconds")
+        print(f"Original Mutual Info:       {metrics['mi_original']:.6f} bits")
+        print(f"Aggregated Mutual Info:     {metrics['mi_aggregated']:.6f} bits")
+        print(f"Information Loss (KL Rate): {metrics['information_loss']:.6f} bits")
