@@ -19,13 +19,16 @@ To ensure the mathematical validity and software engineering rigor of the aggreg
 The repository is modularized into isolated algorithm environments and a centralized benchmarking suite:
 
 ```text
-├── spectral_clustering/        # Spectral partition algorithms using eigenvector embedding (e.g., Deng et al.)
-├── information_theoretic/      # Agglomerative KL-divergence minimization (e.g., Geiger et al.)
-├── transition_based/           # Agglomerative clustering based on transition distribution using Jensen-Shannon distance
-├── sdp_optimization/           # Optimization and deterministic rounding methodologies
-└── experiment/                 # Centralized evaluation pipelines and synthetic data generation
-    ├── benchmark.py            # Main execution script for empirical testing
-    └── metrics.py              # Mathematical definitions of evaluation criteria
+├── spectral_clustering/               # Spectral partition algorithms using eigenvector embedding (e.g., Deng et al.)
+├── information_theoretic/             # Agglomerative KL-divergence minimization (e.g., Geiger et al.)
+├── transition_based/                  # Agglomerative clustering based on transition distribution using Jensen-Shannon distance
+├── sdp_optimization/                  # Optimization and deterministic rounding methodologies
+└── data_handler/                      # Centralized evaluation pipelines and synthetic data generation
+    ├── alanine_dipeptide_loader.py    # Loads Alanine Dipeptide dataset (https://markovmodel.github.io/mdshare/ALA2/#alanine-dipeptide)
+    ├── geolife_loaded.py              # Loads GeoLife dataset (https://www.microsoft.com/en-us/download/details.aspx?id=52367)
+    ├── wikimedia_loader.py            # Loads Wikimedia clickstream dataset (https://dumps.wikimedia.org/other/)
+└── experiment/                        # Centralized evaluation pipelines and synthetic data generation
+    ├── benchmark.py                   # Main execution script for empirical testing
 ```
 
 ## Evaluation Metrics
